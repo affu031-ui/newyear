@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy New Year Madam Ji 🤍</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family: 'Georgia', serif;
+  background:#000;
+  color:#fff;
+  overflow:hidden;
+}
+
+/* PASSWORD SCREEN */
+#lockScreen{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#000428,#004e92);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  z-index:10;
+}
+#lockScreen h2{margin-bottom:15px}
+#lockScreen input{
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  outline:none;
+  text-align:center;
+}
+#lockScreen button{
+  margin-top:10px;
+  padding:10px 20px;
+  border:none;
+  border-radius:8px;
+  background:#fff;
+  color:#000;
+  font-weight:bold;
+}
+
+/* SLIDES */
+.slide{
+  position:absolute;
+  inset:0;
+  padding:25px;
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  text-align:center;
+  background:rgba(0,0,0,0.55);
+}
+.slide.active{display:flex}
+
+h1{font-size:28px;margin-bottom:15px}
+p{font-size:16px;line-height:1.7;margin-bottom:20px}
+
+.next{
+  margin-top:20px;
+  font-size:14px;
+  opacity:0.8;
+}
+
+/* FIREWORKS */
+canvas{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PASSWORD -->
+<div id="lockScreen">
+  <h2>🔐 Enter Password</h2>
+  <input type="password" id="pass" placeholder="Only for you 🤍">
+  <button onclick="unlock()">Open</button>
+</div>
+
+<canvas id="fireworks"></canvas>
+
+<!-- SLIDES -->
+<div class="slide active">
+  <h1>Happy New Year<br>Madam ji 🤍</h1>
+  <p>
+    Iss naye saal ki shuruaat main sirf ek hi dua karta hoon —
+    aap hamesha muskurati raho aur khush raho.
+  </p>
+  <div class="next">Swipe / Tap →</div>
+</div>
+
+<div class="slide">
+  <p>
+    Nikah aur Walima wale din aap
+    <b>bohat bohat zyada khoobsurat</b> lag rahi thi.
+    Meri nazar aapse hati hi nahi.
+  </p>
+  <div class="next">Next →</div>
+</div>
+
+<div class="slide">
+  <p>
+    Utna waqt milna bhi naseeb se kam nahi tha.
+    Main bohat khush hoon ke maine
+    aapko itni der tak dekha 🤍
+  </p>
+  <div class="next">Next →</div>
+</div>
+
+<div class="slide">
+  <p>
+    Aap jab bhi free ho,
+    bas mujhe bata dena —
+    main zaroor aaunga,
+    sirf aapse milne ke liye.
+  </p>
+  <div class="next">Next →</div>
+</div>
+
+<div class="slide">
+  <p>
+    Dil se <b>thank you</b> har cheez ke liye.
+    Aunty aur uncle se milkar
+    mujhe bohat achha laga.
+  </p>
+  <div class="next">Next →</div>
+</div>
+
+<div class="slide">
+  <p>
+    Is naye saal meri ek hi khwahish hai —
+    <b>aap meri zindagi ka hamesha ke liye hissa ban jao.</b><br><br>
+    Main aapse bohat mohabbat karta hoon
+    aur aapse nikah karna chahta hoon 🤍
+  </p>
+</div>
+
+<script>
+/* PASSWORD */
+function unlock(){
+  if(document.getElementById("pass").value==="madamji"){
+    document.getElementById("lockScreen").style.display="none";
+  }else{
+    alert("Wrong password 🤍");
+  }
+}
+
+/* SLIDE SWIPE */
+let slides=document.querySelectorAll(".slide");
+let index=0;
+document.body.addEventListener("click",()=>{
+  slides[index].classList.remove("active");
+  index=Math.min(index+1,slides.length-1);
+  slides[index].classList.add("active");
+});
+
+/* FIREWORKS */
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+let particles=[];
+function firework(){
+  for(let i=0;i<60;i++){
+    particles.push({
+      x:Math.random()*canvas.width,
+      y:Math.random()*canvas.height,
+      r:Math.random()*2+1,
+      dx:(Math.random()-0.5)*4,
+      dy:(Math.random()-0.5)*4,
+      life:100
+    });
+  }
+}
+setInterval(firework,1200);
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach((p,i)=>{
+    ctx.fillStyle="white";
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+    p.x+=p.dx;
+    p.y+=p.dy;
+    p.life--;
+    if(p.life<=0)particles.splice(i,1);
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>
